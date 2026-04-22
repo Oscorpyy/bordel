@@ -1,0 +1,45 @@
+color for print :
+
+1 : bold
+2 : gray
+3 : italic
+4 : underline
+7 : bg white
+8 : black
+9 : strikeout (barrer)
+21 : double underline
+30 : gray
+31 : red
+32 : green
+33 : yellow
+34 : blue
+35 : pink
+36 : cyan
+40 : bg black
+41 : bg red
+42 : bg green
+43 : bg yellow
+44 : bg blue
+45 : bg pink
+46 : bg cyan
+47 : bg white
+52 : underline
+90 : gray
+91 : red
+92 : green
+93 : yellow
+94 : blue
+95 : pink
+96 : cyan
+100 : bg light gray
+101 : bg light red
+102 : bg light green
+103 : bg light yellow
+104 : bg light blue
+105 : bg light pink
+106 : bg light cyan
+107 : bg light white
+
+for test : 
+for i in range(100):
+     print(f"\033[0{i}m teste : {i}\033[0m")
