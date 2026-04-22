@@ -44,3 +44,21 @@ def convert_base(base_from, base_to, number):
         result = digits[reste] + result  # On ajoute le nouveau chiffre
         decimal_number = decimal_number // base_to
     return result
+
+
+if __name__ == "__main__":
+    print(convert_base(10, 2, 42))
+
+
+def insertion(lst, nb):
+    if len(lst) < 2:
+        return lst
+    for i in range(nb):
+        lst.insert(0, lst[-1])
+        lst.pop()
+    return (lst)
+
+if __name__ == "__main__":
+    print(insertion([1, 2, 3, 4, 5, 6, 7, 8, 9], 11117))
+    print(insertion([1], 11117))
+    print(insertion([], 11117))
