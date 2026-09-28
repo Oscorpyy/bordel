@@ -87,6 +87,24 @@ def py_graph_cycle_detector(graph: dict[int, list[int]]) -> bool:
     """
     Determine if a directed graph contains at least one cycle.
     Returns True if a cycle exists, False if acyclic or empty.
+    btw this fonction is shit so i rewrote it in a better way (easier to reproduce):
+    
+    def rec_check(graph, neighbors: list[int]):
+    for i in neighbors:
+        if not i in graph:
+            continue
+        rec_check(graph, graph[i])
+
+    def py_graph_cycle_detector(graph: dict[int, list[int]]) -> bool:
+
+        try:
+            for i in graph:
+                rec_check(graph, graph[i])
+            return False
+        except RecursionError:
+            return True
+
+    dankechun to the cocobussie wich helped me to find the cheat mode
     """
     visiting: set[int] = set()
     visited: set[int] = set()
@@ -145,33 +163,31 @@ def island_matrix_counter(matrix: list[list[str]]) -> int:
     if not matrix or not matrix[0]:
         return 0
 
-    rows: int = len(matrix)
-    cols: int = len(matrix[0])
     visited: set[tuple[int, int]] = set()
     islands: int = 0
 
-    def dfs(r: int, c: int) -> None:
+    def dfs(x: int, z: int) -> None:
         if (
-            r < 0 or r >= rows or 
-            c < 0 or c >= cols or 
-            matrix[r][c] == "0" or 
-            (r, c) in visited
+            x < 0 or x >= len(matrix) or 
+            z < 0 or z >= len(matrix[0]) or 
+            matrix[x][z] == "0" or 
+            (x, z) in visited
         ):
             return
             
-        visited.add((r, c))
+        visited.add((x, z))
         
         # Traverse horizontally and vertically
-        dfs(r + 1, c)
-        dfs(r - 1, c)
-        dfs(r, c + 1)
-        dfs(r, c - 1)
+        dfs(x + 1, z)
+        dfs(x - 1, z)
+        dfs(x, z + 1)
+        dfs(x, z - 1)
 
-    for r in range(rows):
-        for c in range(cols):
-            if matrix[r][c] == "1" and (r, c) not in visited:
+    for x in range(len(matrix)):
+        for z in range(len(matrix[0])):
+            if matrix[x][z] == "1" and (x, z) not in visited:
                 islands += 1
-                dfs(r, c)
+                dfs(x, z)
 
     return islands
 
