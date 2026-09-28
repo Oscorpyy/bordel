@@ -1,44 +1,39 @@
 from typing import Any
 from test import Test
 
-
-def island_matrix_counter(matrix: list[list[str]]) -> int:
-    if not matrix or not matrix[0]:
-        return 0
+def word_ladder(start: str, end: str, sentence: list[str]) -> int:
+    """
+    Calculates the length of the shortest transformation sequence from a start word to an end word.
+    Returns the number of words in the shortest ladder, or 0 if no transformation is possible.
+    """
+    word_set: set[str] = set(sentence)
     
-    nb_islands = 0
-    visited: list[tuple(int, int)] = []
-    def get_island(x, y):
-        if (
-            x < 0 or x >= len(matrix) or
-            y < 0 or y >= len(matrix[0]) or
-            matrix[x][y] == "0"  or 
-            (x, y) in visited
-        ):
-            return
-
-        visited.append((x, y))
+    if end not in word_set:
+        return 0
         
-        get_island(x + 1, y)
-        get_island(x - 1, y)
-        get_island(x, y + 1)
-        get_island(x, y - 1)
-
-    for i in range(len(matrix)):
-        for j in range(len(matrix[i])):
-            if (matrix[i][j] == '1' and (i, j) not in visited):
-                nb_islands += 1
-                get_island(i, j)
-    return nb_islands
-
-
+    queue: deque[tuple[str, int]] = deque([(start, 1)])
+    
+    while queue:
+        current_word, level = queue.popleft()
+        
+        if current_word == end:
+            return level
+            
+        for i in range(len(current_word)):
+            for char in "abcdefghijklmnopqrstuvwxyz":
+                if char == current_word[i]:
+                    continue
+                    
+                next_word: str = current_word[:i] + char + current_word[i+1:]
+                
+                if next_word in word_set:
+                    word_set.remove(next_word)
+                    queue.append((next_word, level + 1))
+                    
+    return 0
 
 if __name__ == "__main__":
-    # matrix = [["1", "1", "1", "1", "0"],
-    #           ["1", "1", "1", "0", "0"],
-    #           ["1", "1", "0", "1", "0"],
-    #           ["0", "0", "1", "0", "0"]]
-    # print(island_matrix_counter(matrix))
+    # print(prism_detector(["CAT", "A..", "T.."], "CAT"))
     t= Test()
-    t.island_matrix_counter()
+    t.word_ladder()
 

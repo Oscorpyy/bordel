@@ -258,8 +258,7 @@ def word_ladder(start: str, end: str, sentence: list[str]) -> int:
             return level
             
         for i in range(len(current_word)):
-            for char_code in range(97, 123):
-                char: str = chr(char_code)
+            for char in "abcdefghijklmnopqrstuvwxyz"
                 if char == current_word[i]:
                     continue
                     
