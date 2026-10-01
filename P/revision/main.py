@@ -1,39 +1,66 @@
 from typing import Any
 from test import Test
+from collections import deque
 
-def word_ladder(start: str, end: str, sentence: list[str]) -> int:
-    """
-    Calculates the length of the shortest transformation sequence from a start word to an end word.
-    Returns the number of words in the shortest ladder, or 0 if no transformation is possible.
-    """
-    word_set: set[str] = set(sentence)
-    
-    if end not in word_set:
-        return 0
-        
-    queue: deque[tuple[str, int]] = deque([(start, 1)])
-    
-    while queue:
-        current_word, level = queue.popleft()
-        
-        if current_word == end:
-            return level
-            
-        for i in range(len(current_word)):
-            for char in "abcdefghijklmnopqrstuvwxyz":
-                if char == current_word[i]:
-                    continue
-                    
-                next_word: str = current_word[:i] + char + current_word[i+1:]
-                
-                if next_word in word_set:
-                    word_set.remove(next_word)
-                    queue.append((next_word, level + 1))
-                    
-    return 0
+def generate_spiral(size: int) -> list[list[int]]:
+
+    if size <= 0:
+        return []
+
+    max_nb = size * size
+    matrix = [[max_nb] * size for _ in range(size)]
+
+    top = 0
+    bottom = size - 1
+    left = 0
+    right = size - 1
+
+    nb = 1
+
+    while nb < max_nb:
+        for i in range(left, right + 1, + 1):
+            matrix[top][i] = nb
+            nb += 1
+        top += 1
+
+        for i in range(top, bottom + 1, + 1):
+            matrix[i][right] = nb
+            nb += 1
+        right -= 1
+
+        for i in range(right, left - 1, -1):
+            matrix[bottom][i] = nb
+            nb += 1
+        bottom -= 1
+
+        for i in range(bottom, top - 1, -1):
+            matrix[i][left] = nb
+            nb += 1
+        left += 1
+
+    return matrix
+
+def generate_spiral(n: int) -> list[list[int]]:
+    matrix = [[0] * n for _ in range(n)]
+    x = y = direction = 0
+    moves = [(1, 0), (0, 1), (-1, 0), (0, -1)]
+
+    for num in range(1, n * n + 1):
+        matrix[y][x] = num
+
+        dx, dy = moves[direction]
+        nx, ny = x + dx, y + dy
+
+        if not (0 <= nx < n and 0 <= ny < n) or matrix[ny][nx]:
+            direction = (direction + 1) % 4
+            dx, dy = moves[direction]
+
+        x += dx
+        y += dy
+
+    return matrix
 
 if __name__ == "__main__":
-    # print(prism_detector(["CAT", "A..", "T.."], "CAT"))
+    print(generate_spiral(4))
     t= Test()
-    t.word_ladder()
-
+    # t.generate_spiral()

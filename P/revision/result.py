@@ -1,5 +1,4 @@
 from typing import Any
-from collections import deque
 
 
 def compress(s: str) -> str:
@@ -58,12 +57,12 @@ def generate_spiral(n: int) -> list[list[int]]:
     total_elements: int = n * n
 
     while current_num <= total_elements:
-        for i in range(left, right + 1):
+        for i in range(left, right + 1, + 1):
             matrix[top][i] = current_num
             current_num += 1
         top += 1
 
-        for i in range(top, bottom + 1):
+        for i in range(top, bottom + 1, + 1):
             matrix[i][right] = current_num
             current_num += 1
         right -= 1
@@ -88,49 +87,20 @@ def py_graph_cycle_detector(graph: dict[int, list[int]]) -> bool:
     Determine if a directed graph contains at least one cycle.
     Returns True if a cycle exists, False if acyclic or empty.
     btw this fonction is shit so i rewrote it in a better way (easier to reproduce):
-    
-    def rec_check(graph, neighbors: list[int]):
-    for i in neighbors:
-        if not i in graph:
-            continue
-        rec_check(graph, graph[i])
-
-    def py_graph_cycle_detector(graph: dict[int, list[int]]) -> bool:
-
-        try:
-            for i in graph:
-                rec_check(graph, graph[i])
-            return False
-        except RecursionError:
-            return True
-
     dankechun to the cocobussie wich helped me to find the cheat mode
     """
-    visiting: set[int] = set()
-    visited: set[int] = set()
+    def rec_check(graph, neighbors: list[int]):
+        for i in neighbors:
+            if not i in graph:
+                continue
+            rec_check(graph, graph[i])
 
-    def dfs(node: int) -> bool:
-        if node in visiting:
-            return True
-        if node in visited:
-            return False
-
-        visiting.add(node)
-
-        for neighbor in graph.get(node, []):
-            if dfs(neighbor):
-                return True
-
-        visiting.remove(node)
-        visited.add(node)
+    try:
+        for i in graph:
+            rec_check(graph, graph[i])
         return False
-
-    for node in graph:
-        if node not in visited:
-            if dfs(node):
-                return True
-
-    return False
+    except RecursionError:
+        return True
 
 
 def py_room_scheduler(meetings: list[list[int]]) -> dict[str, Any]:
@@ -166,28 +136,28 @@ def island_matrix_counter(matrix: list[list[str]]) -> int:
     visited: set[tuple[int, int]] = set()
     islands: int = 0
 
-    def dfs(x: int, z: int) -> None:
+    def dfs(x: int, y: int) -> None:
         if (
             x < 0 or x >= len(matrix) or 
-            z < 0 or z >= len(matrix[0]) or 
-            matrix[x][z] == "0" or 
-            (x, z) in visited
+            y < 0 or y >= len(matrix[0]) or 
+            matrix[x][y] == "0" or 
+            (x, y) in visited
         ):
             return
             
-        visited.add((x, z))
+        visited.add((x, y))
         
         # Traverse horizontally and vertically
-        dfs(x + 1, z)
-        dfs(x - 1, z)
-        dfs(x, z + 1)
-        dfs(x, z - 1)
+        dfs(x + 1, y)
+        dfs(x - 1, y)
+        dfs(x, y + 1)
+        dfs(x, y - 1)
 
     for x in range(len(matrix)):
-        for z in range(len(matrix[0])):
-            if matrix[x][z] == "1" and (x, z) not in visited:
+        for y in range(len(matrix[0])):
+            if matrix[x][y] == "1" and (x, y) not in visited:
                 islands += 1
-                dfs(x, z)
+                dfs(x, y)
 
     return islands
 
@@ -239,14 +209,16 @@ def prism_detector(grid: list[str], pattern: str) -> list[tuple[int, int, str]]:
     return results
 
 
+from collections import deque
+
+
 def word_ladder(start: str, end: str, sentence: list[str]) -> int:
     """
     Calculates the length of the shortest transformation sequence from a start word to an end word.
     Returns the number of words in the shortest ladder, or 0 if no transformation is possible.
     """
-    word_set: set[str] = set(sentence)
     
-    if end not in word_set:
+    if end not in sentence:
         return 0
         
     queue: deque[tuple[str, int]] = deque([(start, 1)])
@@ -258,14 +230,14 @@ def word_ladder(start: str, end: str, sentence: list[str]) -> int:
             return level
             
         for i in range(len(current_word)):
-            for char in "abcdefghijklmnopqrstuvwxyz"
+            for char in "abcdefghijklmnopqrstuvwxyz":
                 if char == current_word[i]:
                     continue
                     
                 next_word: str = current_word[:i] + char + current_word[i+1:]
                 
-                if next_word in word_set:
-                    word_set.remove(next_word)
+                if next_word in sentence:
+                    # sentence.remove(next_word)
                     queue.append((next_word, level + 1))
-                    
+
     return 0
