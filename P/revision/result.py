@@ -1,6 +1,5 @@
 from typing import Any
 
-
 def compress(s: str) -> str:
     if (len(s) == 0):
         return ""
