@@ -90,6 +90,7 @@ class Test:
             ("aabbcc",),
             ("aaaaaaaaaaaa",),
             ("aabccccccccccccccccccccccccchgoaaa",),
+            ("aabccccccccccccccccccccccccchgoaaaaaaaaaaaaaaaaaaaaaaaaaaaa",),
         ])
 
     def decompress(self) -> None:

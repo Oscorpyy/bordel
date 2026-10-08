@@ -2,65 +2,52 @@ from typing import Any
 from test import Test
 from collections import deque
 
-def generate_spiral(size: int) -> list[list[int]]:
+def compress(s: str) -> str:
+    if len(s) < 1: 
+        return ""
+    i = 1
+    last = 0
+    result = ""
+    same = 1
+    while (i < len(s)):
+        if s[i] == s[last]:
+            same +=1
+            i+=1
+        else :
+            if same > 1:
+                result = result + ((s[last] + "9") * (same//9)) + (s[last] + str(same % 9))
+            else :
+                result = result + s[last]
+            last = i
+            i +=1
+            same = 1
+    if same > 1 and (same % 9 != 1):
+        result = result + ((s[last] + "9") * (same//9)) + (s[last] + str(same % 9))
+    elif same > 1 and (same % 9 == 1):
+        result = result + ((s[last] + "9") * (same//9)) + (s[last])
+    else :
+        result = result + s[last]
+    return result
 
-    if size <= 0:
-        return []
+def decompress(s: str) -> str:
+    res = ""
+    if not s:
+        return res
+    i = 0
+    while (i < len(s) - 1):
+        if s[i].isalpha():
+            if s[i + 1].isdigit():
+                res += (s[i] * int(s[i +1]))
+            else :
+                res += (s[i])
+        i+=1
+    if s[i].isalpha():
+        res += (s[i])
+    return res
 
-    max_nb = size * size
-    matrix = [[max_nb] * size for _ in range(size)]
-
-    top = 0
-    bottom = size - 1
-    left = 0
-    right = size - 1
-
-    nb = 1
-
-    while nb < max_nb:
-        for i in range(left, right + 1, + 1):
-            matrix[top][i] = nb
-            nb += 1
-        top += 1
-
-        for i in range(top, bottom + 1, + 1):
-            matrix[i][right] = nb
-            nb += 1
-        right -= 1
-
-        for i in range(right, left - 1, -1):
-            matrix[bottom][i] = nb
-            nb += 1
-        bottom -= 1
-
-        for i in range(bottom, top - 1, -1):
-            matrix[i][left] = nb
-            nb += 1
-        left += 1
-
-    return matrix
-
-def generate_spiral(n: int) -> list[list[int]]:
-    matrix = [[0] * n for _ in range(n)]
-    x = y = direction = 0
-    moves = [(1, 0), (0, 1), (-1, 0), (0, -1)]
-
-    for num in range(1, n * n + 1):
-        matrix[y][x] = num
-
-        dx, dy = moves[direction]
-        nx, ny = x + dx, y + dy
-
-        if not (0 <= nx < n and 0 <= ny < n) or matrix[ny][nx]:
-            direction = (direction + 1) % 4
-            dx, dy = moves[direction]
-
-        x += dx
-        y += dy
-
-    return matrix
 
 if __name__ == "__main__":
-    print(generate_spiral(4))
+    # print(decompress("a2bc5a3"))
     t= Test()
-    # t.generate_spiral()
+    # t.compress()
+    t.decompress()

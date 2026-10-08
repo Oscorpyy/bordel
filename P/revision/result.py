@@ -28,58 +28,44 @@ def compress(s: str) -> str:
 
 def decompress(s: str) -> str:
     result = ""
+    if not s:
+        return result
     i = 0
-    while (i < len(s)):
+    while (i < len(s) - 1):
         # print(f"s[i] = {s[i]}, i = {i}")
         if s[i].isalpha() and s[i + 1].isdigit():
             result += str(int(s[i + 1]) * s[i])
         elif s[i].isalpha():
             result += str(s[i])
         i += 1
+    if s[i].isalpha():
+        result += str(s[i])
     return (result)
 
 
-def generate_spiral(n: int) -> list[list[int]]:
-    """
-    Generate an n x n matrix filled with elements from 1 to n^2 in spiral order.
-    """
-    if n <= 0:
+def generate_spiral(size : int) -> list[list[int]]:
+    if size < 1 :
         return []
 
-    matrix: list[list[int]] = [[0] * n for _ in range(n)]
+    matrix = [[0] * size for _ in range(size)]
+    y = x = direction = 0
+    moves = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 
-    top: int = 0
-    bottom: int = n - 1
-    left: int = 0
-    right: int = n - 1
+    for nb in range(1, size * size + 1):
+        matrix[x][y] = nb
 
-    current_num: int = 1
-    total_elements: int = n * n
+        dx, dy = moves[direction]
+        nx = x + dx
+        ny = y + dy
+        if not (0 <= nx < size and 0 <= ny < size) or matrix[nx][ny] != 0:
+            direction = (direction + 1) % 4
+            dx, dy = moves[direction]
+            
+        x += dx
+        y += dy
 
-    while current_num <= total_elements:
-        for i in range(left, right + 1, + 1):
-            matrix[top][i] = current_num
-            current_num += 1
-        top += 1
 
-        for i in range(top, bottom + 1, + 1):
-            matrix[i][right] = current_num
-            current_num += 1
-        right -= 1
-
-        if top <= bottom:
-            for i in range(right, left - 1, -1):
-                matrix[bottom][i] = current_num
-                current_num += 1
-            bottom -= 1
-
-        if left <= right:
-            for i in range(bottom, top - 1, -1):
-                matrix[i][left] = current_num
-                current_num += 1
-            left += 1
-
-    return matrix
+    return (matrix)
 
 
 def py_graph_cycle_detector(graph: dict[int, list[int]]) -> bool:
