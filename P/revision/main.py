@@ -14,18 +14,24 @@ def pack(strs: list[str]) -> str:
     return s
 
 def unpack(s: str) -> list[str]:
-    strs = [[]]
+    strs = []
     count = 0
+    temp = ''
     for i in range(len(s)):
         if s[i] == "#":
             count += 1
-            strs.append([])
+            if len(temp) > 0:
+                strs.append(temp)
+            temp = ''
             continue
-        strs[count] += s[i]
+        temp += s[i]
+    if len(temp) > 0:
+        strs.append(temp)
     return strs
  
 
 if __name__ == "__main__":
-    print(unpack(pack(['hello', 'world'])))
-    print(unpack('5#hello5#world'))
-    lancer_tests()
+    # print(unpack(pack(['hello', 'world'])))
+    # print(unpack('5#hello5#world'))
+    print(unpack(pack("['', 'a', '', 'b', '']")))
+    # lancer_tests()
