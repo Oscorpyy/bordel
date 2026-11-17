@@ -5,12 +5,16 @@ from runner import lancer_tests
 
 def pack(strs: list[str]) -> str:
     s = ""
+    temp = ""
     nb_strs = len(strs)
     for j in range(nb_strs):
         for i in range(len(strs[j])):
-            s += strs[j][i]
-            if (j+1 < len(strs) and i+1 == len(strs[j])):
+            temp += strs[j][i]
+            if (i+1 == len(strs[j])):
+                s+=str(len(temp))
                 s+="#"
+                s+=temp
+                temp = ""
     return s
 
 def unpack(s: str) -> list[str]:
@@ -31,7 +35,7 @@ def unpack(s: str) -> list[str]:
  
 
 if __name__ == "__main__":
-    # print(unpack(pack(['hello', 'world'])))
+    print(pack(['hello', 'world']))
     # print(unpack('5#hello5#world'))
-    print(unpack(pack("['', 'a', '', 'b', '']")))
+    # print(unpack(pack("['', 'a', '', 'b', '']")))
     # lancer_tests()
