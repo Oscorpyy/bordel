@@ -38,4 +38,4 @@ if __name__ == "__main__":
     print(pack(['hello', 'world']))
     # print(unpack('5#hello5#world'))
     # print(unpack(pack("['', 'a', '', 'b', '']")))
-    # lancer_tests()
+    lancer_tests()
